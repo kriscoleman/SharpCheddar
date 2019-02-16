@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage;
 using SharpCheddar.Core;
 
-namespace SharpCheddar.EFCore
+namespace SharpCheddar.EntityFrameworkCore
 {
     public class EntityFrameworkCoreRepository<T, TKey> : IRepository<T, TKey> where T : IDataModel<TKey>
     {
@@ -18,7 +18,7 @@ namespace SharpCheddar.EFCore
         /// <value>
         /// The test database context.
         /// </value>
-        internal DbContext DbContext { get; }
+        public DbContext DbContext { get; }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="EntityFrameworkCoreRepository{T, TKey}"/> class.

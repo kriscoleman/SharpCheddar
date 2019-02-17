@@ -24,13 +24,13 @@ namespace Tests.EntityFrameworkCore
         }
 
         [Test]
-        public void ICanAddARecord() => Test(async () =>
+        public void ICanAddARecord() => Test(() =>
         {
             var entity = new MyModel {CreatedOn = DateTime.UtcNow};
-            await _myRepository.InsertOrUpdateAsync(entity);
+            _myRepository.InsertOrUpdateAsync(entity);
            
             // we're kinda breaking IoC here, but its for the purpose of this test. normally you dont want to leak your abstraction. 
-            await (_myRepository as EntityFrameworkCoreRepository<MyModel, int>)?.DbContext.SaveChangesAsync();
+            (_myRepository as EntityFrameworkCoreRepository<MyModel, int>)?.DbContext.SaveChangesAsync();
 
             // the id should be set by the DB and not be default now
 
@@ -38,20 +38,20 @@ namespace Tests.EntityFrameworkCore
         });
 
         [Test]
-        public void ICanUpdateRecord() => Test(async () =>
+        public void ICanUpdateRecord() => Test(() =>
         {
             var createdOn = DateTime.UtcNow;
             var entity = new MyModel {CreatedOn = createdOn};
-            await _myRepository.InsertOrUpdateAsync(entity);
+            _myRepository.InsertOrUpdateAsync(entity);
            
             // we're kinda breaking IoC here, but its for the purpose of this test. normally you dont want to leak your abstraction. 
-            await (_myRepository as EntityFrameworkCoreRepository<MyModel, int>)?.DbContext.SaveChangesAsync();
+            (_myRepository as EntityFrameworkCoreRepository<MyModel, int>)?.DbContext.SaveChangesAsync();
 
-            var entityReturned = await _myRepository.GetByIdAsync(entity.Id);
+            var entityReturned = _myRepository.GetByIdAsync(entity.Id).Result;
             Assert.That(entityReturned.CreatedOn, Is.EqualTo(createdOn));
            
             // we're kinda breaking IoC here, but its for the purpose of this test. normally you dont want to leak your abstraction. 
-            await (_myRepository as EntityFrameworkCoreRepository<MyModel, int>)?.DbContext.SaveChangesAsync();
+            (_myRepository as EntityFrameworkCoreRepository<MyModel, int>)?.DbContext.SaveChangesAsync();
 
             var updatedDateTime = createdOn.AddYears(7);
             entityReturned.CreatedOn = updatedDateTime;

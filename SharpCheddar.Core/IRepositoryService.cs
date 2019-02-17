@@ -33,7 +33,7 @@ namespace SharpCheddar.Core
         Task<ICollection<T>> GetAsync(Expression<Func<T, bool>> predicate);
 
         /// <summary>
-        /// Gets all. This can be expensive on big repositories. I suggest not depending on GetAllAsync, unless you need to. 
+        /// Gets all. . 
         /// Caching and Paging should probably be implemented on large repositories.
         /// </summary>
         /// <returns></returns>

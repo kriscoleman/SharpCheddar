@@ -44,9 +44,6 @@ namespace Tests.EntityFrameworkCore
         {
             var entity = new MyModel {CreatedOn = DateTime.UtcNow};
             await _myRepository.InsertOrUpdateAsync(entity);
-           
-            // we're kinda breaking IoC here, but its for the purpose of this test. normally you dont want to leak your abstraction. 
-            await (_myRepository as EntityFrameworkCoreRepository<MyModel, int>)?.DbContext.SaveChangesAsync();
 
             // the id should be set by the DB and not be default now
             Assert.That(entity.Id != default(int));
@@ -59,20 +56,19 @@ namespace Tests.EntityFrameworkCore
             var entity = new MyModel {CreatedOn = createdOn};
             await _myRepository.InsertOrUpdateAsync(entity);
            
-            // we're kinda breaking IoC here, but its for the purpose of this test. normally you dont want to leak your abstraction. 
-            await (_myRepository as EntityFrameworkCoreRepository<MyModel, int>)?.DbContext.SaveChangesAsync();
-
             var entityReturned = await _myRepository.GetByIdAsync(entity.Id);
             Assert.That(entityReturned.CreatedOn, Is.EqualTo(createdOn));
            
-            // we're kinda breaking IoC here, but its for the purpose of this test. normally you dont want to leak your abstraction. 
-            await (_myRepository as EntityFrameworkCoreRepository<MyModel, int>)?.DbContext.SaveChangesAsync();
-
             var updatedDateTime = createdOn.AddYears(7);
             entityReturned.CreatedOn = updatedDateTime;
+
+            await _myRepository.InsertOrUpdateAsync(entityReturned);
+
             var entithReturnedAgain = await _myRepository.GetByIdAsync(entity.Id);
             Assert.That(entithReturnedAgain.CreatedOn, Is.EqualTo(updatedDateTime));
         });
+
+        // todo: get, getbyid, delete, getall.
 
         /// <summary>
         /// Tests the specified unit of work inside a transaction which get's rolled back, ensuring the work is Idempotent

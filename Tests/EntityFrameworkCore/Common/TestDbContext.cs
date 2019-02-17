@@ -10,7 +10,7 @@ namespace Tests.EntityFrameworkCore.Common
         {
             base.OnConfiguring(optionsBuilder);
             optionsBuilder.UseSqlServer(
-                "Data Source=(localdb)\\MSSQLLocalDB;Integrated Security=True;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False");
+                "Data Source=(localdb)\\MSSQLLocalDB;Database=SharpCheddar.EfCoreTests;Integrated Security=True;Connect Timeout=30;Encrypt=False;");
         }
     }
 }

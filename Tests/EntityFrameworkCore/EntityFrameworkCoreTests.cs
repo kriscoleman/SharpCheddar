@@ -1,5 +1,6 @@
 using System;
 using System.ComponentModel.DataAnnotations;
+using System.Threading.Tasks;
 using NUnit.Framework;
 using SharpCheddar.Core;
 using SharpCheddar.EntityFrameworkCore;
@@ -10,6 +11,7 @@ namespace Tests.EntityFrameworkCore
     /// <summary>
     /// Tests for the EntityFrameworkCore Repository
     /// </summary>
+    [TestFixture]
     public class EntityFrameworkCoreTests
     {
         private IRepository<MyModel, int> _myRepository;
@@ -24,50 +26,48 @@ namespace Tests.EntityFrameworkCore
         }
 
         [Test]
-        public void ICanAddARecord() => Test(() =>
+        public async Task ICanAddARecord() => await Test(async () =>
         {
             var entity = new MyModel {CreatedOn = DateTime.UtcNow};
-            _myRepository.InsertOrUpdateAsync(entity);
+            await _myRepository.InsertOrUpdateAsync(entity);
            
             // we're kinda breaking IoC here, but its for the purpose of this test. normally you dont want to leak your abstraction. 
-            (_myRepository as EntityFrameworkCoreRepository<MyModel, int>)?.DbContext.SaveChangesAsync();
+            await (_myRepository as EntityFrameworkCoreRepository<MyModel, int>)?.DbContext.SaveChangesAsync();
 
             // the id should be set by the DB and not be default now
-
             Assert.That(entity.Id != default(int));
         });
 
         [Test]
-        public void ICanUpdateRecord() => Test(() =>
+        public async Task ICanUpdateRecord() => await Test(async () =>
         {
             var createdOn = DateTime.UtcNow;
             var entity = new MyModel {CreatedOn = createdOn};
-            _myRepository.InsertOrUpdateAsync(entity);
+            await _myRepository.InsertOrUpdateAsync(entity);
            
             // we're kinda breaking IoC here, but its for the purpose of this test. normally you dont want to leak your abstraction. 
-            (_myRepository as EntityFrameworkCoreRepository<MyModel, int>)?.DbContext.SaveChangesAsync();
+            await (_myRepository as EntityFrameworkCoreRepository<MyModel, int>)?.DbContext.SaveChangesAsync();
 
-            var entityReturned = _myRepository.GetByIdAsync(entity.Id).Result;
+            var entityReturned = await _myRepository.GetByIdAsync(entity.Id);
             Assert.That(entityReturned.CreatedOn, Is.EqualTo(createdOn));
            
             // we're kinda breaking IoC here, but its for the purpose of this test. normally you dont want to leak your abstraction. 
-            (_myRepository as EntityFrameworkCoreRepository<MyModel, int>)?.DbContext.SaveChangesAsync();
+            await (_myRepository as EntityFrameworkCoreRepository<MyModel, int>)?.DbContext.SaveChangesAsync();
 
             var updatedDateTime = createdOn.AddYears(7);
             entityReturned.CreatedOn = updatedDateTime;
-            Assert.That(entityReturned.CreatedOn, Is.EqualTo(updatedDateTime));
+            var entithReturnedAgain = await _myRepository.GetByIdAsync(entity.Id);
+            Assert.That(entithReturnedAgain.CreatedOn, Is.EqualTo(updatedDateTime));
         });
 
         /// <summary>
         /// Tests the specified unit of work inside a transaction which get's rolled back, ensuring the work is Idempotent
         /// </summary>
         /// <param name="unitOfWork">The unit of work.</param>
-        private void Test(Action unitOfWork)
+        private async Task Test(Func<Task> unitOfWork)
         {
-            using (var transaction = (_myRepository as EntityFrameworkCoreRepository<MyModel, int>)?.BeginTransaction(unitOfWork))
-            {
+            using (var transaction = await (_myRepository as EntityFrameworkCoreRepository<MyModel, int>)?.BeginTransactionAsync(unitOfWork))
                 transaction?.Rollback();
-            }
         }
 
         public class MyModel : IDataModel<int>

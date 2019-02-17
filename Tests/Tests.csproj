@@ -20,6 +20,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="EntityFrameworkCore\Common\Migrations\" />
     <Folder Include="Migrations\" />
   </ItemGroup>
 

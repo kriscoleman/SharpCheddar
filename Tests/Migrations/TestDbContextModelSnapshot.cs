@@ -19,7 +19,7 @@ namespace Tests.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-            modelBuilder.Entity("Tests.EntityFrameworkCoreTests+MyModel", b =>
+            modelBuilder.Entity("Tests.EntityFrameworkCore.EntityFrameworkCoreTests+MyModel", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -30,6 +30,13 @@ namespace Tests.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("MyModels");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            CreatedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                        });
                 });
 #pragma warning restore 612, 618
         }

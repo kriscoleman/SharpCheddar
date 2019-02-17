@@ -2,9 +2,9 @@
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 
-namespace Tests.EntityFrameworkCore.Common.Migrations
+namespace Tests.Migrations
 {
-    public partial class InitialCreate : Migration
+    public partial class init : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -20,6 +20,11 @@ namespace Tests.EntityFrameworkCore.Common.Migrations
                 {
                     table.PrimaryKey("PK_MyModels", x => x.Id);
                 });
+
+            migrationBuilder.InsertData(
+                table: "MyModels",
+                columns: new[] { "Id", "CreatedOn" },
+                values: new object[] { 1, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified) });
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)

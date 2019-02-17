@@ -1,5 +1,5 @@
 ﻿# SharpCheddar 🧀
-A suite of .NetStandar and DotNetCorelibrary of data repositories
+A suite of .NetStandard and DotNetCore data repositories
 
 Designed with TDD, bearing the SOLID principles in mind, and implemnting `async/await` patterns
 
@@ -8,9 +8,10 @@ These days databases are a dime a dozen. Not only are they plenty, but many of t
 have specialized uses. It's becoming more common to use different types of datatypes
 for different projects, or sometimes even for different purposes in a single project. 
 
-SharpCheddar lets you abstract out your data layer using a common interface, providing many benefits. 
+SharpCheddar lets you abstract out your data layer using a common interface, providing many benefits. Just like cheese, you can put SharpCheddar 🧀 on anything!
 
 - Working with the different database types feels uniform
+- It allow for more flexibility, ever wish you could change the underlying data provider of a data type? With SharpCheddar it's a brie-ze!
 - Simpler, easier to maintain data access layers!
 - Quicker to adopt a multiple databases in a project! 
 - Quicker ramp up - just define your models and your database's native config, and start ripping one!
@@ -57,7 +58,7 @@ await _myRepository.DeleteByIdAsync(entity.Id);
 This project is purposely designed with the SOLID principles in mind.
 
 1) It is recommended to use the Dependancy Inversion principle when using your repositories, that is, you should always try to depend on the common interface instead of the concretions. Let your DI container handle that for you based on your registrations. 
-2) However, in some situations during Testing or otherwise, there may be need to break this principle and work directly with the concretion or your underlying database provider. For that purpose, our conretions have been made purposely leaky. It is recommended in these situations to cast the interface as your expected concretion type to use it this way. This should always be avoided unless there is a good reason. 
+2) However, in some situations during (testing or otherwise), there may be need to break this principle and work directly with the concretion or your underlying database provider. For that purpose, our concretions have been made purposely leaky. It is recommended in these situations to cast the interface as your expected concretion type to use it this way. This should always be avoided unless there is a good reason. 
 3) While using these repos may simplify your data acess, you will still want to have a great understanding of the underlying databse layers that you depend on. 
 4) You should not use the repositories directly, and you shouldn't expose your underlying dataprovider or any `IQueryables`. Instead, you should wrap your reposotories in logic or service layers, and only return simple `IEnumrable` types from queries (arrays, ienumerables, lists)
 5) You should always check if you can use your repository before using it in your unit of work. You should always make your repository ready first by initializing it. You can check if your repository is ready by checking `IsInitialized`.
@@ -89,6 +90,10 @@ This project is purposely designed with the SOLID principles in mind.
  }
 ```
 3) All EFCore features can be used still, including `DataAnnotations`
+
+## More to come:
+- MongoDbCore
+- BrightstarDb
 
 # Contributor Documentation
 
@@ -126,6 +131,9 @@ Finally, create a new pull request in github to merge your branch into develop.
 Wait for Peer Review. Upon Peer Review completion, the merge can be completed.
 
 Later, before publishing new changes, a pull request from develop to master should be created for a new release.
+
+## Trello Board
+The project is managed on a public trello board. Feel free to join up and contribute, or just watch the progress! https://trello.com/b/D3uSgguS/sharpcheddar%F0%9F%A7%80
 
 ## Deployment 
 I'm working on CI/CD to publish the project as a nuget package automatically on pull requests to `master`. I will update the documentation upon completion.

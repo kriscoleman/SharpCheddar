@@ -20,7 +20,7 @@ namespace Tests.EntityFrameworkCore.Common
 
             // we'll seed this data for use in queries in our testing
             modelBuilder.Entity<EntityFrameworkCoreTests.MyModel>()
-                .HasData(new EntityFrameworkCoreTests.MyModel {CreatedOn = DateTime.MinValue, Id = 1});
+                .HasData(new EntityFrameworkCoreTests.MyModel {CreatedOn = DateTime.MinValue, Id = EntityFrameworkCoreTests.MyModel.SeedEntityId});
         }
     }
 }

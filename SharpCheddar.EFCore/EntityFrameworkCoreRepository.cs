@@ -25,8 +25,8 @@ namespace SharpCheddar.EntityFrameworkCore
         /// </summary>
         /// <param name="dbContext">The test database context.</param>
         public EntityFrameworkCoreRepository(DbContext dbContext)
-        {
-            DbContext = dbContext;
+        {   
+            DbContext = dbContext ?? throw new ArgumentNullException(nameof(dbContext));
         }
 
         /// <summary>
@@ -48,7 +48,7 @@ namespace SharpCheddar.EntityFrameworkCore
         /// <value>
         ///     <c>true</c> if this instance is initialized; otherwise, <c>false</c>.
         /// </value>
-        public bool IsInitialized => DbContext != null;
+        public bool IsInitialized { get; private set; }
 
         /// <summary>
         ///     Starts a transacation and returns it so you can control the transaction.
@@ -60,24 +60,49 @@ namespace SharpCheddar.EntityFrameworkCore
         /// <returns></returns>
         public async Task<IDbContextTransaction> BeginTransactionAsync(Func<Task> action)
         {
+            await CheckIfInitializedAsync();
+
             var transaction = await DbContext.Database.BeginTransactionAsync();
             await action.Invoke();
             return transaction;
         }
 
-        public Task DeleteAsync(TKey id)
+        /// <summary>
+        /// Deletes the specified entity.
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        /// <exception cref="NotImplementedException"></exception>
+        public async Task DeleteAsync(TKey id)
         {
-            throw new NotImplementedException();
+            await CheckIfInitializedAsync();
+            var entity = await GetByIdAsync(id);
+            DbContext.Set<T>().Remove(entity);
+            await DbContext.SaveChangesAsync();
         }
 
-        public Task<IQueryable<T>> GetAllAsync()
+        /// <summary>
+        /// Gets all. 
+        /// Caching and Paging should probably be implemented on large repositories.
+        /// </summary>
+        /// <returns></returns>
+        public async Task<IQueryable<T>> GetAllAsync()
         {
-            throw new NotImplementedException();
+            await CheckIfInitializedAsync();
+            return DbContext.Set<T>();
         }
 
-        public Task<IQueryable<T>> GetAsync(Expression<Func<T, bool>> predicate)
+        /// <summary>
+        /// Gets results with the specified predicate.
+        /// </summary>
+        /// <param name="predicate">The predicate.</param>
+        /// <returns>
+        /// A collection of T
+        /// </returns>
+        public async Task<IQueryable<T>> GetAsync(Expression<Func<T, bool>> predicate)
         {
-            throw new NotImplementedException();
+            await CheckIfInitializedAsync();
+            return DbContext.Set<T>().Where(predicate);
         }
 
         /// <inheritdoc />
@@ -90,7 +115,7 @@ namespace SharpCheddar.EntityFrameworkCore
         /// </returns>
         public async Task<T> GetByIdAsync(TKey id)
         {
-            await CheckIfInitialized();
+            await CheckIfInitializedAsync();
             return await DbContext.FindAsync<T>(id);
         }
 
@@ -99,7 +124,10 @@ namespace SharpCheddar.EntityFrameworkCore
         ///     Initializes this instance.
         /// </summary>
         /// <returns></returns>
-        public Task InitializeAsync() => Task.CompletedTask;
+        public async Task InitializeAsync()
+        {
+            IsInitialized = await DbContext.Database.CanConnectAsync();
+        }
 
         /// <inheritdoc />
         /// <summary>
@@ -109,7 +137,7 @@ namespace SharpCheddar.EntityFrameworkCore
         /// <returns></returns>
         public async Task InsertOrUpdateAsync(T entity)
         {
-            await CheckIfInitialized();
+            await CheckIfInitializedAsync();
 
             if (entity.Id.Equals(default(TKey)))
             {
@@ -128,7 +156,7 @@ namespace SharpCheddar.EntityFrameworkCore
         /// </summary>
         /// <returns></returns>
         /// <exception cref="SharpCheddarInitializationException"></exception>
-        private Task CheckIfInitialized()
+        private Task CheckIfInitializedAsync()
         {
             if (!IsInitialized) throw new SharpCheddarInitializationException();
             return Task.CompletedTask;

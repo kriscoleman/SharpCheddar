@@ -60,6 +60,17 @@ This project is purposely designed with the SOLID principles in mind.
 2) However, in some situations during Testing or otherwise, there may be need to break this principle and work directly with the concretion or your underlying database provider. For that purpose, our conretions have been made purposely leaky. It is recommended in these situations to cast the interface as your expected concretion type to use it this way. This should always be avoided unless there is a good reason. 
 3) While using these repos may simplify your data acess, you will still want to have a great understanding of the underlying databse layers that you depend on. 
 4) You should not use the repositories directly, and you shouldn't expose your underlying dataprovider or any `IQueryables`. Instead, you should wrap your reposotories in logic or service layers, and only return simple `IEnumrable` types from queries (arrays, ienumerables, lists)
+5) You should always check if you can use your repository before using it in your unit of work. You should always make your repository ready first by initializing it. You can check if your repository is ready by checking `IsInitialized`.
+```
+ await _myRepository.InitializeAsync();
+ if (!_myRepository.IsInitialized)
+ {
+    // uh oh, nows your chance to handle this gracefully
+ }
+
+ var entity = new MyModel {CreatedOn = DateTime.UtcNow};
+ await _myRepository.InsertOrUpdateAsync(entity);
+```
 
 ## EntityFrameworkCore
 
@@ -105,6 +116,8 @@ create a feature/ branch if working on a feature
 create a bug/ branch if working on a bug
 create a fix/ branch if working on a fix/feedback that doesn't fit into feature or bug
 Make your changes and commit often to your new branch.
+
+Please utilize TDD when contributing to this project. Please note that your pull requests will be expected to have tests passing, and if you added a feature, new tests to validate it. If you fix a bug that wasn't captured in a test, then please write a test for it.
 
 When you are done with your changes, run any tests that may be included in the solution and make sure they all pass.
 

@@ -11,7 +11,7 @@ variables:
   test: "Tests"
   ACCEPT_EULA: "Y"
   SA_PASSWORD: SomeStrong!Passw0rd
-  SemVer: $(gitversion -showvariable FullSemVer)
+  SemVer: $(dotnet-gitversion -showvariable FullSemVer)
 
 before_script:
   - "dotnet restore"

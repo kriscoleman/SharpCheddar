@@ -2,8 +2,6 @@ image: microsoft/dotnet:latest
 services:
   - name: microsoft/mssql-server-linux:latest
     alias: sql
-    ports:
-      - "5100:1433"
 
 stages:
   - build

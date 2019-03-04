@@ -1,0 +1,27 @@
+image: microsoft/dotnet:latest
+services:
+  - name: microsoft/mssql-server-linux:latest
+    alias: sql
+
+stages:
+  - build
+  - test
+
+variables:
+  test: "Tests"
+  ACCEPT_EULA: "Y"
+  SA_PASSWORD: SomeStrong!Passw0rd
+
+before_script:
+  - "dotnet restore"
+
+build:
+  stage: build
+  script:
+    - "dotnet build"
+
+test:
+  stage: test
+  script:
+    - "cd $test"
+    - "dotnet test"

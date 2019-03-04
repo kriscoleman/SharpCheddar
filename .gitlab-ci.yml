@@ -31,7 +31,8 @@ test:
 publish:
   stage: publish
   script:
-    - "dotnet pack -p:PackageVersion=$SemVer"
+    - "sh -c '$(curl -fsSL https://raw.githubusercontent.com/Linuxbrew/install/master/install.sh)'"
     - "brew install gitversion"
+    - "dotnet pack -p:PackageVersion=$SemVer"
     - "dotnet nuget push ./SharpCheddar.Core/bin/Debug/SharpCheddar.Core*.nupkg -k $sharpcheddar_nuget_key -s https://api.nuget.org/v3/index.json"
     - "dotnet nuget push ./SharpCheddar.EntityFrameworkCore/bin/Debug/SharpCheddar.EFCore*.nupkg -k $sharpcheddar_nuget_key -s https://api.nuget.org/v3/index.json"

@@ -9,9 +9,16 @@ namespace Tests.EntityFrameworkCore.Common
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
+            // for CI testing
+
             base.OnConfiguring(optionsBuilder);
             optionsBuilder.UseSqlServer(
-                "Data Source=localhost, 5100;Database=SharpCheddar.EfCoreTests;user=sa;password=SomeStrong!Passw0rd;Connect Timeout=30;Encrypt=False;");
+                "Data Source=sql, 5100;Database=SharpCheddar.EfCoreTests;user=sa;password=SomeStrong!Passw0rd;Connect Timeout=30;Encrypt=False;");
+
+            // below is for local dev
+
+            //optionsBuilder.UseSqlServer(
+            //    "Data Source=localhost, 5100;Database=SharpCheddar.EfCoreTests;user=sa;password=SomeStrong!Passw0rd;Connect Timeout=30;Encrypt=False;");
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)

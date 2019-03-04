@@ -1,7 +1,7 @@
 image: microsoft/dotnet:latest
 services:
   - name: microsoft/mssql-server-linux:latest
-    alias: localhost
+    alias: sql
 
 stages:
   - build

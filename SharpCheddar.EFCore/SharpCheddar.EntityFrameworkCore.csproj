@@ -23,6 +23,7 @@ A suite of .NetStandard and DotNetCore data repositories. Designed with TDD, bea
     <PackageTags>Repositories, Data, ORMS, DAL, Data Acces, Sharp, Cheddar, EF, Entity, Entity Framework, SQL</PackageTags>
     <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
     <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
+    <Version>0.2.0</Version>
   </PropertyGroup>
 
   <ItemGroup>

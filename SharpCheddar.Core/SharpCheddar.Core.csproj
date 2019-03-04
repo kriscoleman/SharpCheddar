@@ -24,6 +24,7 @@ A suite of .NetStandard and DotNetCore data repositories. Designed with TDD, bea
     <RepositoryUrl>https://github.com/kriscoleman/SharpCheddar/</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
     <PackageTags>Repositories, Data, ORMS, DAL, Data Acces, Sharp, Cheddar</PackageTags>
+    <Version>0.2.0</Version>
   </PropertyGroup>
 
   <ItemGroup>

@@ -31,5 +31,5 @@ publish:
   stage: publish
   script:
     - "dotnet pack"
-    - "dotnet nuget push ./SharpCheddar.Core/bin/Debug/SharpCheddar.Core*.nupkg -k %sharpcheddar_nuget_key% -s https://api.nuget.org/v3/index.json"
-    - "dotnet nuget push ./SharpCheddar.EntityFrameworkCore/bin/Debug/SharpCheddar.EntityFrameworkCore*.nupkg -k %sharpcheddar_nuget_key% -s https://api.nuget.org/v3/index.json"
+    - "dotnet nuget push ./SharpCheddar.Core/bin/Debug/SharpCheddar.Core*.nupkg -k $sharpcheddar_nuget_key -s https://api.nuget.org/v3/index.json"
+    - "dotnet nuget push ./SharpCheddar.EntityFrameworkCore/bin/Debug/SharpCheddar.EntityFrameworkCore*.nupkg -k $sharpcheddar_nuget_key -s https://api.nuget.org/v3/index.json"

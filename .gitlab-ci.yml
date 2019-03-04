@@ -21,12 +21,6 @@ build:
   script:
     - "dotnet build"
 
-test:
-  stage: test
-  script:
-    - "cd $test"
-    - "dotnet test"
-
 publish:
   stage: publish
   script:

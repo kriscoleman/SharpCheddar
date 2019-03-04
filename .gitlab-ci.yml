@@ -25,6 +25,6 @@ publish:
   script:
     - "dotnet tool install --global GitVersion.Tool --version 5.0.0-beta2-6"
     - 'export PATH="$PATH:/root/.dotnet/tools"'
-    - "dotnet pack -p:PackageVersion=$(dotnet-gitversion -showvariable FullSemVer)"
+    - 'dotnet pack -p:PackageVersion="$(dotnet-gitversion -showvariable FullSemVer)"'
     - "dotnet nuget push ./SharpCheddar.Core/bin/Debug/SharpCheddar.Core*.nupkg -k $sharpcheddar_nuget_key -s https://api.nuget.org/v3/index.json"
     - "dotnet nuget push ./SharpCheddar.EntityFrameworkCore/bin/Debug/SharpCheddar.EFCore*.nupkg -k $sharpcheddar_nuget_key -s https://api.nuget.org/v3/index.json"

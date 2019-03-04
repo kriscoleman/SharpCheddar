@@ -15,6 +15,10 @@ variables:
 before_script:
   - "dotnet restore"
 
+after_script:
+  - "dotnet pack"
+  - "dotnet publish"
+
 build:
   stage: build
   script:

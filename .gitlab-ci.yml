@@ -1,4 +1,4 @@
-image: microsoft/mssql-server-windows-express 
+image: microsoft/mssql-server-windows-developer
 image: microsoft/dotnet:latest
 
 stages:

@@ -1,4 +1,4 @@
-image: microsoft/mssql-server-windows-developer
+image: microsoft/mssql-server-windows-developer:latest
 
 stages:
   - build

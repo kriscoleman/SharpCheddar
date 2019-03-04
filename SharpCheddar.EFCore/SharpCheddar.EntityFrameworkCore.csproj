@@ -2,6 +2,27 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
+    <Description>SharpCheddar 🧀
+These days databases are a dime a dozen. Not only are they plenty, but many of them
+have specialized uses. It's becoming more common to use different types of datatypes
+for different projects, or sometimes even for different purposes in a single project. 
+
+SharpCheddar lets you abstract out your data layer using a common interface, providing many benefits. Just like cheese, you can put SharpCheddar 🧀 on anything!
+
+- Working with the different database types feels uniform
+- It allow for more flexibility, ever wish you could change the underlying data provider of a data type? With SharpCheddar it's a brie-ze!
+- Simpler, easier to maintain data access layers!
+- Quicker to adopt a multiple databases in a project! 
+- Quicker ramp up - just define your models and your database's native config, and start ripping one!
+
+A suite of .NetStandard and DotNetCore data repositories. Designed with TDD, bearing the SOLID principles in mind, and implemnting `async/await` patterns.</Description>
+    <PackageLicenseUrl>https://github.com/kriscoleman/SharpCheddar/blob/master/LICENSE</PackageLicenseUrl>
+    <PackageProjectUrl>https://github.com/kriscoleman/SharpCheddar</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/kriscoleman/SharpCheddar</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <PackageTags>Repositories, Data, ORMS, DAL, Data Acces, Sharp, Cheddar, EF, Entity, Entity Framework, SQL</PackageTags>
+    <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
+    <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
   </PropertyGroup>
 
   <ItemGroup>

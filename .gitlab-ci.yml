@@ -6,6 +6,7 @@ services:
 stages:
   - build
   - test
+  - publish
 
 variables:
   test: "Tests"
@@ -14,11 +15,6 @@ variables:
 
 before_script:
   - "dotnet restore"
-
-after_script:
-  - "dotnet pack"
-  - "dotnet nuget push ./SharpCheddar.Core/bin/Debug/SharpCheddar.Core*.nupkg -k ${sharpcheddar_nuget_key} -Source https://api.nuget.org/v3/index.json"
-  - "dotnet nuget push ./SharpCheddar.EntityFrameworkCore/bin/Debug/SharpCheddar.EntityFrameworkCore*.nupkg -k ${sharpcheddar_nuget_key} -Source https://api.nuget.org/v3/index.json"
 
 build:
   stage: build
@@ -30,3 +26,8 @@ test:
   script:
     - "cd $test"
     - "dotnet test"
+
+publish:
+  - "dotnet pack"
+  - "dotnet nuget push ./SharpCheddar.Core/bin/Debug/SharpCheddar.Core*.nupkg -k ${sharpcheddar_nuget_key}"
+  - "dotnet nuget push ./SharpCheddar.EntityFrameworkCore/bin/Debug/SharpCheddar.EntityFrameworkCore*.nupkg -k ${sharpcheddar_nuget_key}"

@@ -1,0 +1,9 @@
+image: mcr.microsoft.com/mssql/server
+image: microsoft/dotnet:latest
+
+stages:
+  - build
+  - test
+
+  variables:
+  test: "Tests/Tests.csproj"

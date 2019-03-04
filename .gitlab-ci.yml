@@ -5,5 +5,19 @@ stages:
   - build
   - test
 
-  variables:
+variables:
   test: "Tests/Tests.csproj"
+
+before_script:
+  - "dotnet restore"
+
+build:
+  stage: build
+  script:
+    - "dotnet build"
+    
+test:
+  stage: test
+  script:
+    - "cd $test"
+    - "dotnet test"

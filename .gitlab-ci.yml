@@ -1,5 +1,4 @@
 image: mcr.microsoft.com/mssql/server
-image: microsoft/dotnet:latest
 
 stages:
   - build
@@ -15,7 +14,7 @@ build:
   stage: build
   script:
     - "dotnet build"
-    
+
 test:
   stage: test
   script:

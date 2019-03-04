@@ -11,7 +11,7 @@ namespace Tests.EntityFrameworkCore.Common
         {
             base.OnConfiguring(optionsBuilder);
             optionsBuilder.UseSqlServer(
-                "Data Source=.\\sql;Database=SharpCheddar.EfCoreTests;user=sa;password=SomeStrong!Passw0rd;Connect Timeout=30;Encrypt=False;");
+                "Data Source=sql;Database=SharpCheddar.EfCoreTests;user=sa;password=SomeStrong!Passw0rd;Connect Timeout=30;Encrypt=False;");
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)

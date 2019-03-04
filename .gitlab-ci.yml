@@ -9,6 +9,8 @@ stages:
 
 variables:
   test: "Tests"
+  ACCEPT_EULA: "Y"
+  SA_PASSWORD: SomeStrong!Passw0rd
 
 before_script:
   - "dotnet restore"

@@ -5,7 +5,7 @@ stages:
   - test
 
 variables:
-  test: "Tests/Tests.csproj"
+  test: "Tests"
 
 before_script:
   - "dotnet restore"

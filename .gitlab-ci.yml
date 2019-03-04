@@ -12,6 +12,7 @@ variables:
   test: "Tests"
   ACCEPT_EULA: "Y"
   SA_PASSWORD: SomeStrong!Passw0rd
+  SemVer: $(gitversion -showvariable FullSemVer)
 
 before_script:
   - "dotnet restore"
@@ -31,5 +32,6 @@ publish:
   stage: publish
   script:
     - "dotnet pack"
+    - "brew install gitversion"
     - "dotnet nuget push ./SharpCheddar.Core/bin/Debug/SharpCheddar.Core*.nupkg -k $sharpcheddar_nuget_key -s https://api.nuget.org/v3/index.json"
     - "dotnet nuget push ./SharpCheddar.EntityFrameworkCore/bin/Debug/SharpCheddar.EFCore*.nupkg -k $sharpcheddar_nuget_key -s https://api.nuget.org/v3/index.json"

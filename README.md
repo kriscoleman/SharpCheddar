@@ -16,8 +16,6 @@ SharpCheddar lets you abstract out your data layer using a common interface, pro
 - Quicker to adopt a multiple databases in a project! 
 - Quicker ramp up - just define your models and your database's native config, and start ripping one!
 
-# Consumer Information
-
 ## How to use
 1) pull down the nuget `SharpCheddar.Core` nuget package. 
 2) pull down whatever other nuget packages you might want, like the `SharpCheddar.EntityFrameworkCore` or `SharpCheddar.BrightstarDb` packages

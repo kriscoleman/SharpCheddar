@@ -1,7 +1,7 @@
 # Contributor Documentation
 
 ## Dependencies
-If you are developing for this project you will need to have dotnetcore sdk, and Visual Studio. 
+If you are developing for this project you will need to have dotnetcore sdk, and Visual Studio. You will also need Docker to get the containers running for the various db types. You will also want to have GitVision installed to tag version updates. 
 
 ## Building and Running the App
 Being that this is a .Net project, it will be easiest to develop this project in the latest version of Visual Studio or Visual Studio Code.

@@ -23,9 +23,4 @@
     <ProjectReference Include="..\SharpCheddar.EFCore\SharpCheddar.EntityFrameworkCore.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="EntityFrameworkCore\Common\Migrations\" />
-    <Folder Include="Migrations\" />
-  </ItemGroup>
-
 </Project>

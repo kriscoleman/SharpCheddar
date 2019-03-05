@@ -1,0 +1,11 @@
+﻿version: "3.4"
+
+services:
+  sql:
+    image: microsoft/mssql-server-linux:latest
+    container_name: sqlserver
+    ports:
+      - "5100:1433"
+    environment:
+      - SA_PASSWORD=SomeStrong!Passw0rd
+      - ACCEPT_EULA=Y

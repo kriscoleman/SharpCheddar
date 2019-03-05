@@ -38,4 +38,4 @@ publish:
       ln -s /usr/lib/x86_64-linux-gnu/libgit2.so /lib/x86_64-linux-gnu/libgit2-15e1193.so"
     - 'dotnet pack -p:PackageVersion="$(dotnet-gitversion -showvariable FullSemVer)"'
     - "dotnet nuget push ./SharpCheddar.Core/bin/Debug/SharpCheddar.Core*.nupkg -k $sharpcheddar_nuget_key -s https://api.nuget.org/v3/index.json"
-    - "dotnet nuget push ./SharpCheddar.EFCore/bin/Debug/SharpCheddar.EFCore*.nupkg -k $sharpcheddar_nuget_key -s https://api.nuget.org/v3/index.json"
+    - "dotnet nuget push ./SharpCheddar.EFCore/bin/Debug/SharpCheddar.EntityFrameworkCore*.nupkg -k $sharpcheddar_nuget_key -s https://api.nuget.org/v3/index.json"

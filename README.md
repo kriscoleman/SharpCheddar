@@ -1,4 +1,6 @@
 ﻿# SharpCheddar 🧀
+ [![pipeline status](https://gitlab.com/user/userproject/badges/master/pipeline.svg)](https://gitlab.com/kriscoleman/SharpCheddar/commits/master)
+ 
 A suite of .NetStandard and DotNetCore data repositories
 
 Designed with TDD, bearing the SOLID principles in mind, and implemnting `async/await` patterns

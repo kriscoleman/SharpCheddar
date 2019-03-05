@@ -1,5 +1,5 @@
 ﻿# SharpCheddar 🧀
- [![pipeline status](https://gitlab.com/user/userproject/badges/master/pipeline.svg)](https://gitlab.com/kriscoleman/SharpCheddar/commits/master)
+ [![pipeline status](https://gitlab.com/kriscoleman/SharpCheddar/badges/master/pipeline.svg)](https://gitlab.com/kriscoleman/SharpCheddar/commits/master)
  
 A suite of .NetStandard and DotNetCore data repositories
 

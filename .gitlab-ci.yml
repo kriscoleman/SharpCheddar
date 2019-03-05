@@ -6,6 +6,7 @@ services:
 stages:
   - build
   - test
+  - publish
 
 variables:
   test: "Tests"
@@ -25,3 +26,16 @@ test:
   script:
     - "cd $test"
     - "dotnet test"
+
+publish:
+  stage: publish
+  script:
+    - "dotnet tool install --global GitVersion.Tool --version 5.0.0-beta2-6"
+    - 'export PATH="$PATH:/root/.dotnet/tools"'
+    - "apt-get install libcurl3"
+    - "apt-get update && \
+      apt-get install -y libgit2-dev && \
+      ln -s /usr/lib/x86_64-linux-gnu/libgit2.so /lib/x86_64-linux-gnu/libgit2-15e1193.so"
+    - 'dotnet pack -p:PackageVersion="$(dotnet-gitversion -showvariable FullSemVer)"'
+    - "dotnet nuget push ./SharpCheddar.Core/bin/Debug/SharpCheddar.Core*.nupkg -k $sharpcheddar_nuget_key -s https://api.nuget.org/v3/index.json"
+    - "dotnet nuget push ./SharpCheddar.EFCore/bin/Debug/SharpCheddar.EFCore*.nupkg -k $sharpcheddar_nuget_key -s https://api.nuget.org/v3/index.json"

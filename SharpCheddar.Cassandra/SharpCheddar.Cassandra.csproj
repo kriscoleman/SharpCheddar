@@ -1,0 +1,12 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="CassandraCSharpDriver" Version="3.9.0" />
+    <PackageReference Include="SharpCheddar.Core" Version="0.2.0" />
+  </ItemGroup>
+
+</Project>

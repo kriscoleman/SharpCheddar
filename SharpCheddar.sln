@@ -19,6 +19,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tests", "Tests\Tests.csproj
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SharpCheddar.Core", "SharpCheddar.Core\SharpCheddar.Core.csproj", "{1E788875-46B5-47B6-B8BF-FB21E936442C}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SharpCheddar.Cassandra", "SharpCheddar.Cassandra\SharpCheddar.Cassandra.csproj", "{3FF72CA6-5374-4107-B650-BC9FB80FF28D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -51,6 +53,14 @@ Global
 		{1E788875-46B5-47B6-B8BF-FB21E936442C}.Release|Any CPU.Build.0 = Release|Any CPU
 		{1E788875-46B5-47B6-B8BF-FB21E936442C}.Release|x86.ActiveCfg = Release|Any CPU
 		{1E788875-46B5-47B6-B8BF-FB21E936442C}.Release|x86.Build.0 = Release|Any CPU
+		{3FF72CA6-5374-4107-B650-BC9FB80FF28D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3FF72CA6-5374-4107-B650-BC9FB80FF28D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3FF72CA6-5374-4107-B650-BC9FB80FF28D}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{3FF72CA6-5374-4107-B650-BC9FB80FF28D}.Debug|x86.Build.0 = Debug|Any CPU
+		{3FF72CA6-5374-4107-B650-BC9FB80FF28D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3FF72CA6-5374-4107-B650-BC9FB80FF28D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3FF72CA6-5374-4107-B650-BC9FB80FF28D}.Release|x86.ActiveCfg = Release|Any CPU
+		{3FF72CA6-5374-4107-B650-BC9FB80FF28D}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

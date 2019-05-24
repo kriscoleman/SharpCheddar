@@ -12,16 +12,11 @@ namespace Tests.EntityFrameworkCore
     ///     Tests for the EntityFrameworkCore Repository
     /// </summary>
     [TestFixture]
-    public sealed class EntityFrameworkCoreTests : SimpleCRUDTestsBase
+    public sealed class EntityFrameworkCoreTests : SimpleCRUDTestsBase<TestModule>
     {
         public override async Task Setup()
         {
-            // todo: set up DI when we have more concretes. 
-            // the setup method of the tests should double as an example of how to set up the repository for new projects. 
-
-            _initialize = true;
-            var entityFrameworkCoreRepository = new EntityFrameworkCoreRepository<MyModel, int>(new TestDbContext());
-            _myRepository = entityFrameworkCoreRepository;
+            await base.Setup();
 
             // Alternatively, you can use context.Database.EnsureCreated() to create a new database containing the seed data,
             // for example for a test database or when using the in-memory provider or any non-relation database.
@@ -29,25 +24,7 @@ namespace Tests.EntityFrameworkCore
             // For relational databases you shouldn't call EnsureCreated() if you plan to use Migrations.
             // https://docs.microsoft.com/en-us/ef/core/modeling/data-seeding
 
-            await entityFrameworkCoreRepository.DbContext.Database.MigrateAsync();
-            await entityFrameworkCoreRepository.DbContext.Database.EnsureCreatedAsync();
-        }
-
-        public override async Task TearDown()
-        {
-            await (_myRepository as EntityFrameworkCoreRepository<MyModel, int>).DbContext.Database
-                .EnsureDeletedAsync();
-        }
-
-        protected override async Task Test(Func<Task> unitOfWork)
-        {
-            await base.Test(unitOfWork);
-
-            using (var transaction =
-                await (_myRepository as EntityFrameworkCoreRepository<MyModel, int>)?.BeginTransactionAsync(unitOfWork))
-            {
-                transaction?.Rollback();
-            }
+            await (_myRepository as EntityFrameworkCoreRepository<MyModel, int>).DbContext.Database.MigrateAsync();
         }
 
         [Test]
@@ -55,6 +32,21 @@ namespace Tests.EntityFrameworkCore
         {
             Assert.Throws<ArgumentNullException>(() => new EntityFrameworkCoreRepository<MyModel, int>(null));
             return Task.CompletedTask;
+        }
+
+        public override async Task TearDown() =>
+            await (_myRepository as EntityFrameworkCoreRepository<MyModel, int>).DbContext.Database
+                .EnsureDeletedAsync();
+
+        protected override async Task Test(Func<Task> unitOfWork)
+        {
+            await InitializeIfNeededAsync();
+
+            using (var transaction =
+                await (_myRepository as EntityFrameworkCoreRepository<MyModel, int>)?.BeginTransactionAsync(unitOfWork))
+            {
+                transaction?.Rollback();
+            }
         }
     }
 }

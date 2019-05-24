@@ -5,21 +5,12 @@ namespace Tests.EntityFrameworkCore.Common
 {
     class TestDbContext : DbContext
     {
-        public DbSet<EntityFrameworkCoreTests.MyModel> MyModels { get; set; }
+        public DbSet<MyModel> MyModels { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             base.OnConfiguring(optionsBuilder);
-            
-            // for CI testing
-
-            optionsBuilder.UseSqlServer(
-                "Data Source=sql;Database=SharpCheddar.EfCoreTests;user=sa;password=SomeStrong!Passw0rd;Connect Timeout=30;Encrypt=False;");
-
-            // below is for local dev
-
-            //optionsBuilder.UseSqlServer(
-            //    "Data Source=localhost, 5100;Database=SharpCheddar.EfCoreTests;user=sa;password=SomeStrong!Passw0rd;Connect Timeout=30;Encrypt=False;");
+            optionsBuilder.UseSqlServer(ConfigHelper.Configuration.GetSection("efCore")["connectionString"]);
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -27,8 +18,8 @@ namespace Tests.EntityFrameworkCore.Common
             base.OnModelCreating(modelBuilder);
 
             // we'll seed this data for use in queries in our testing
-            modelBuilder.Entity<EntityFrameworkCoreTests.MyModel>()
-                .HasData(new EntityFrameworkCoreTests.MyModel {CreatedOn = DateTime.MinValue, Id = EntityFrameworkCoreTests.MyModel.SeedEntityId});
+            modelBuilder.Entity<MyModel>()
+                .HasData(new MyModel {CreatedOn = DateTime.MinValue, Id = MyModel.SeedEntityId});
         }
     }
 }

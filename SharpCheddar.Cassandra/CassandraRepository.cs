@@ -2,42 +2,126 @@
 using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
+using Cassandra;
+using Cassandra.Data.Linq;
 using SharpCheddar.Core;
 
 namespace SharpCheddar.Cassandra
 {
     public class CassandraRepository<T, TKey> : IRepository<T, TKey> where T : IDataModel<TKey>
     {
-        public Task DeleteAsync(TKey id)
+        private readonly string _clusterAddress;
+        private readonly string _keySpace;
+
+        /// <summary>
+        ///     Initializes a new instance of the <see cref="CassandraRepository{T, TKey}" /> class.
+        /// </summary>
+        /// <param name="clusterAddress">The cluster address.</param>
+        /// <param name="keySpace">The key space.</param>
+        public CassandraRepository(string clusterAddress, string keySpace)
         {
-            throw new NotImplementedException();
+            _clusterAddress = clusterAddress;
+            _keySpace = keySpace;
         }
 
-        public Task<IQueryable<T>> GetAsync(Expression<Func<T, bool>> predicate)
+        /// <summary>
+        ///     Gets or sets the cluster.
+        /// </summary>
+        /// <value>
+        ///     The cluster.
+        /// </value>
+        public Cluster Cluster { get; private set; }
+
+        /// <summary>
+        ///     Gets a value indicating whether this instance is initialized.
+        /// </summary>
+        /// <value>
+        ///     <c>true</c> if this instance is initialized; otherwise, <c>false</c>.
+        /// </value>
+        public bool IsInitialized { get; private set; }
+
+        /// <summary>
+        ///     Gets or sets the session.
+        /// </summary>
+        /// <value>
+        ///     The session.
+        /// </value>
+        public ISession Session { get; private set; }
+
+        /// <summary>
+        ///     Gets or sets the table.
+        /// </summary>
+        /// <value>
+        ///     The table.
+        /// </value>
+        public Table<T> Table { get; set; }
+
+        /// <summary>
+        ///     Initializes the cluster asynchronously.
+        /// </summary>
+        /// <returns></returns>
+        public async Task InitializeAsync()
         {
-            throw new NotImplementedException();
+            Cluster = Cluster.Builder().AddContactPoint(_clusterAddress).Build();
+            Session = await Cluster.ConnectAsync(_keySpace);
+            Table = new Table<T>(Session);
+
+            IsInitialized = true;
         }
 
-        public Task<IQueryable<T>> GetAllAsync()
+        /// <summary>
+        ///     Deletes the entity asynchronously.
+        /// </summary>
+        /// <param name="id">The identifier.</param>
+        /// <returns></returns>
+        public async Task DeleteAsync(TKey id)
         {
-            throw new NotImplementedException();
+            await this.CheckIfInitializedAsync();
+            await Table.Where(x => x.Id.Equals(id)).Delete().ExecuteAsync();
         }
 
-        public Task<T> GetByIdAsync(TKey id)
+        /// <summary>
+        ///     Gets all entities asynchronously.
+        /// </summary>
+        /// <returns></returns>
+        public async Task<IQueryable<T>> GetAllAsync()
         {
-            throw new NotImplementedException();
+            await this.CheckIfInitializedAsync();
+            return Table.AsQueryable();
         }
 
-        public Task InitializeAsync()
+        /// <summary>
+        ///     Gets the entities asynchronously.
+        /// </summary>
+        /// <param name="predicate">The predicate.</param>
+        /// <returns></returns>
+        public async Task<IQueryable<T>> GetAsync(Expression<Func<T, bool>> predicate)
         {
-            throw new NotImplementedException();
+            await this.CheckIfInitializedAsync();
+            return (await Table.Where(predicate).ExecuteAsync()).AsQueryable();
         }
 
-        public Task InsertOrUpdateAsync(T entity)
+        /// <summary>
+        ///     Gets the entity by identifier asynchronously.
+        /// </summary>
+        /// <param name="id">The identifier.</param>
+        /// <returns></returns>
+        public async Task<T> GetByIdAsync(TKey id)
         {
-            throw new NotImplementedException();
+            await this.CheckIfInitializedAsync();
+            return (await Table.Where(x => x.Id.Equals(id)).ExecuteAsync()).SingleOrDefault();
         }
 
-        public bool IsInitialized { get; }
+        /// <summary>
+        /// Inserts or updates the entity asynchronously.
+        /// </summary>
+        /// <param name="entity">The entity.</param>
+        /// <returns></returns>
+        public async Task InsertOrUpdateAsync(T entity)
+        {
+            await this.CheckIfInitializedAsync();
+            if (entity.Id.Equals(default(TKey))) await Table.Insert(entity).ExecuteAsync();
+            else await Table.Where(x => x.Id.Equals(entity.Id)).Select(x => entity).Update().ExecuteAsync();
+        }
     }
 }

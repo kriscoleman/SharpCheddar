@@ -21,12 +21,19 @@ services:
     restart: always
     volumes:
       - ./out/cassandra_data:/var/lib/cassandra
+    healthcheck:
+      test: ["CMD", "cqlsh", "-u cassandra", "-p cassandra" ,"-e describe keyspaces"]
+      interval: 15s
+      timeout: 10s
+      retries: 10
 
   cassandra-load-keyspace:
     container_name: cassandra-load-keyspace
     image: cassandra:latest
+    ports:
+      - "9043:9043"
     depends_on:
       - cassandra
     volumes:
       - ./src/main/resources/cassandra_schema.cql:/schema.cql
-    command: /bin/bash -c "sleep 60 && echo loading cassandra keyspace && cqlsh cassandra -f /schema.cql"
+    command: /bin/bash -c "sleep 60 && echo loading cassandra keyspace && cd ./schema.cql && ls && cqlsh cassandra -f schema.cql"

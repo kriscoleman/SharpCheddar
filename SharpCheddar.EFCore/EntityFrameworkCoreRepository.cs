@@ -60,7 +60,7 @@ namespace SharpCheddar.EntityFrameworkCore
         /// <returns></returns>
         public async Task<IDbContextTransaction> BeginTransactionAsync(Func<Task> action)
         {
-            await CheckIfInitializedAsync();
+            await this.CheckIfInitializedAsync();
 
             var transaction = await DbContext.Database.BeginTransactionAsync();
             await action.Invoke();
@@ -75,7 +75,7 @@ namespace SharpCheddar.EntityFrameworkCore
         /// <exception cref="NotImplementedException"></exception>
         public async Task DeleteAsync(TKey id)
         {
-            await CheckIfInitializedAsync();
+            await this.CheckIfInitializedAsync();
             var entity = await GetByIdAsync(id);
             DbContext.Set<T>().Remove(entity);
             await DbContext.SaveChangesAsync();
@@ -88,7 +88,7 @@ namespace SharpCheddar.EntityFrameworkCore
         /// <returns></returns>
         public async Task<IQueryable<T>> GetAllAsync()
         {
-            await CheckIfInitializedAsync();
+            await this.CheckIfInitializedAsync();
             return DbContext.Set<T>();
         }
 
@@ -101,7 +101,7 @@ namespace SharpCheddar.EntityFrameworkCore
         /// </returns>
         public async Task<IQueryable<T>> GetAsync(Expression<Func<T, bool>> predicate)
         {
-            await CheckIfInitializedAsync();
+            await this.CheckIfInitializedAsync();
             return DbContext.Set<T>().Where(predicate);
         }
 
@@ -115,7 +115,7 @@ namespace SharpCheddar.EntityFrameworkCore
         /// </returns>
         public async Task<T> GetByIdAsync(TKey id)
         {
-            await CheckIfInitializedAsync();
+            await this.CheckIfInitializedAsync();
             return await DbContext.FindAsync<T>(id);
         }
 
@@ -137,7 +137,7 @@ namespace SharpCheddar.EntityFrameworkCore
         /// <returns></returns>
         public async Task InsertOrUpdateAsync(T entity)
         {
-            await CheckIfInitializedAsync();
+            await this.CheckIfInitializedAsync();
 
             if (entity.Id.Equals(default(TKey)))
             {
@@ -151,15 +151,5 @@ namespace SharpCheddar.EntityFrameworkCore
             if (DbContext != null) await DbContext?.SaveChangesAsync();
         }
 
-        /// <summary>
-        ///     Checks if initialized.
-        /// </summary>
-        /// <returns></returns>
-        /// <exception cref="SharpCheddarInitializationException"></exception>
-        private Task CheckIfInitializedAsync()
-        {
-            if (!IsInitialized) throw new SharpCheddarInitializationException();
-            return Task.CompletedTask;
-        }
     }
 }

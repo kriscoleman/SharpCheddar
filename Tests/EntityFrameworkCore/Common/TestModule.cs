@@ -5,7 +5,7 @@ using SharpCheddar.EntityFrameworkCore;
 
 namespace Tests.EntityFrameworkCore.Common
 {
-    class TestModule : Module
+    public class TestModule : Module
     {
         protected override void Load(ContainerBuilder builder)
         {
@@ -15,8 +15,8 @@ namespace Tests.EntityFrameworkCore.Common
             builder.RegisterType<TestDbContext>().As<DbContext>();
 
             // now register your repo
-            builder.RegisterType<EntityFrameworkCoreRepository<EntityFrameworkCoreTests.MyModel, int>>()
-                .As<IRepository<EntityFrameworkCoreTests.MyModel, int>>();
+            builder.RegisterType<EntityFrameworkCoreRepository<MyModel, int>>()
+                .As<IRepository<MyModel, int>>();
         }
     }
 }
